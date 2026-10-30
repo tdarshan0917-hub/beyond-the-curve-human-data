@@ -33,7 +33,7 @@ How should consequential information move through an AI-assisted system when hum
           v
     DOWNSTREAM USE
 
-The current implementation contains three connected control layers.
+The current implementation contains four connected control layers.
 
 ### 1. Human Review Gate
 
@@ -49,13 +49,19 @@ Supported review states:
 
 A consequential item cannot proceed unless it is explicitly approved and contains reviewer provenance and source information.
 
-### 2. Provenance Validation
+### 2. Lineage Validation
+
+Review records, approved propositions, fact records, and downstream dependencies must refer to the same fact and source lineage.
+
+A mismatch in fact identity, proposition text, source identity, or reviewed source hash blocks downstream use.
+
+### 3. Provenance Validation
 
 A prior human approval applies only to the exact source snapshot that was reviewed.
 
 If either the source identifier or source hash changes, the previous approval is invalidated and the information must return to review.
 
-### 3. Dependency Invalidation
+### 4. Dependency Invalidation
 
 Downstream artifacts retain explicit dependencies on reviewed facts and their versions.
 
@@ -67,6 +73,8 @@ Downstream use is permitted only when:
 
     human review passed
     AND
+    identity and lineage remain consistent
+    AND
     source provenance still matches
     AND
     all downstream dependencies remain approved and version-consistent
@@ -75,7 +83,7 @@ No single stage can override another.
 
 ## Tests
 
-The repository currently contains 23 passing automated tests covering:
+The repository currently contains 25 passing automated tests covering:
 
 - approved consequential data
 - pending review
@@ -84,6 +92,8 @@ The repository currently contains 23 passing automated tests covering:
 - correction workflows
 - missing reviewer provenance
 - missing source provenance
+- mismatched fact identity
+- source-lineage mismatches
 - unchanged source snapshots
 - changed source hashes
 - changed source identities
@@ -146,4 +156,4 @@ Early public research / engineering showcase.
 
 Current automated test status:
 
-23 passing / 0 failing
+25 passing / 0 failing

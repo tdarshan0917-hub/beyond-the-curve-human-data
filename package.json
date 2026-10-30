@@ -1,7 +1,7 @@
 {
   "name": "beyond-the-curve-human-data",
   "version": "1.0.0",
-  "description": "",
+  "description": "Synthetic human-in-the-loop review, provenance, and data-lineage architecture for consequential AI workflows",
   "main": "index.js",
   "directories": {
     "doc": "docs",
@@ -21,5 +21,9 @@
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   },
-  "type": "module"
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
 }

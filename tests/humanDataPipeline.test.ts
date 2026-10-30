@@ -177,3 +177,39 @@ test("all three gates must pass simultaneously", () => {
   assert.equal(result.artifactPassed, false);
   assert.ok(result.blockers.length >= 3);
 });
+
+test("mismatched fact identity blocks downstream use", () => {
+  const result = evaluateHumanDataPipeline({
+    reviewItems: [reviewItem()],
+    reviewedProposition: reviewedProposition({
+      id: "fact-999"
+    }),
+    currentSource: source(),
+    facts: [fact()],
+    artifact: artifact()
+  });
+
+  assert.equal(result.allowed, false);
+  assert.equal(result.lineagePassed, false);
+});
+
+test("source lineage mismatch blocks downstream use", () => {
+  const result = evaluateHumanDataPipeline({
+    reviewItems: [
+      reviewItem({
+        sourceHash: "sha256:different"
+      })
+    ],
+    reviewedProposition: reviewedProposition(),
+    currentSource: source(),
+    facts: [fact()],
+    artifact: artifact()
+  });
+
+  assert.equal(result.allowed, false);
+  assert.equal(result.lineagePassed, false);
+  assert.match(
+    result.blockers.join("\n"),
+    /source hash mismatch/
+  );
+});
